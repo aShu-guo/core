@@ -30,6 +30,7 @@ declare module '@vue/reactivity' {
   }
 }
 
+// 提供的默认render选项
 const rendererOptions = /*#__PURE__*/ extend({ patchProp }, nodeOps)
 
 // lazy create the renderer - this makes core renderer logic tree-shakable
@@ -63,6 +64,7 @@ export const hydrate = ((...args) => {
 }) as RootHydrateFunction
 
 export const createApp = ((...args) => {
+  // args类型为数据，通过...被解构
   const app = ensureRenderer().createApp(...args)
 
   if (__DEV__) {

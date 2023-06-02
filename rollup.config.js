@@ -113,7 +113,7 @@ function createConfig(format, output, plugins = []) {
   if (isNodeBuild) {
     output.esModule = true
   }
-  output.sourcemap = !!process.env.SOURCE_MAP
+  output.sourcemap = true
   output.externalLiveBindings = false
 
   if (isGlobalBuild) {

@@ -190,7 +190,9 @@ export function createAppContext(): AppContext {
 }
 
 export type CreateAppFunction<HostElement> = (
+  // 根组件
   rootComponent: Component,
+  // 根props
   rootProps?: Data | null
 ) => App<HostElement>
 

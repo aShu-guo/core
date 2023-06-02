@@ -1,0 +1,35 @@
+<div id="app"></div>
+<script src="../../packages/vue/dist/vue.global.js"></script>
+<script>
+  const {
+    h,
+    createApp,
+    createElementVNode: _createElementVNode,
+    openBlock: _openBlock,
+    createElementBlock: _createElementBlock
+  } = Vue
+
+  const Test = {
+    methods: {
+      onClick() {
+        console.log('onclick')
+      }
+    },
+    render(ctx) {
+      return h('div', [
+        h('span', 123),
+        h('div', { onClick: ctx.onClick }, 'hello world')
+      ])
+    }
+  }
+
+  const App = {
+    components: { Test },
+    render() {
+      return h(Test)
+    }
+  }
+
+  debugger
+  createApp(App).mount('#app')
+</script>

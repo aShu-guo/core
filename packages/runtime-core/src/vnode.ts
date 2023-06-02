@@ -46,16 +46,21 @@ import { defineLegacyVNodeProperties } from './compat/renderFn'
 import { callWithAsyncErrorHandling, ErrorCodes } from './errorHandling'
 import { ComponentPublicInstance } from './componentPublicInstance'
 
+// 片段节点
 export const Fragment = Symbol.for('v-fgt') as any as {
   __isFragment: true
   new (): {
     $props: VNodeProps
   }
 }
+// 文本节点
 export const Text = Symbol.for('v-txt')
+// 注释节点
 export const Comment = Symbol.for('v-cmt')
+// 静态节点
 export const Static = Symbol.for('v-stc')
 
+// 节点类型
 export type VNodeTypes =
   | string
   | VNode
@@ -229,7 +234,10 @@ export interface VNode<
 // can divide a template into nested blocks, and within each block the node
 // structure would be stable. This allows us to skip most children diffing
 // and only worry about the dynamic nodes (indicated by patch flags).
+// 是一个二维数组，block -> dynamic VNode
+// [[currentBlock], [currentBlock2], ...]
 export const blockStack: (VNode[] | null)[] = []
+// 存放当前Block的动态VNode
 export let currentBlock: VNode[] | null = null
 
 /**
@@ -248,10 +256,12 @@ export let currentBlock: VNode[] | null = null
  *
  * @private
  */
+// 打开一个block，入参默认为false
 export function openBlock(disableTracking = false) {
   blockStack.push((currentBlock = disableTracking ? null : []))
 }
 
+// 清空block相关的全局容器
 export function closeBlock() {
   blockStack.pop()
   currentBlock = blockStack[blockStack.length - 1] || null
@@ -261,6 +271,8 @@ export function closeBlock() {
 // Only tracks when this value is > 0
 // We are not using a simple boolean because this value may need to be
 // incremented/decremented by nested usage of v-once (see below)
+// 标识是否需要跟踪block中的动态子VNode，
+// 但是这里并没有使用布尔类型的原因是因为要incr/decr，使用内嵌的v-once
 export let isBlockTreeEnabled = 1
 
 /**
@@ -308,6 +320,7 @@ export function createElementBlock(
   dynamicProps?: string[],
   shapeFlag?: number
 ) {
+  // debugger
   return setupBlock(
     createBaseVNode(
       type,
@@ -416,6 +429,7 @@ const normalizeRef = ({
   ) as any
 }
 
+// 创建VNode
 function createBaseVNode(
   type: VNodeTypes | ClassComponent | typeof NULL_DYNAMIC_COMPONENT,
   props: (Data & VNodeProps) | null = null,
@@ -424,6 +438,7 @@ function createBaseVNode(
   dynamicProps: string[] | null = null,
   shapeFlag = type === Fragment ? 0 : ShapeFlags.ELEMENT,
   isBlockNode = false,
+  // 是否需要标准化整个子节点
   needFullChildrenNormalization = false
 ) {
   const vnode = {
@@ -475,19 +490,24 @@ function createBaseVNode(
   }
 
   // track vnode for block tree
+  // 跟踪动态的VNode并记录下来
   if (
     isBlockTreeEnabled > 0 &&
     // avoid a block node from tracking itself
+    // 不跟踪Block 节点
     !isBlockNode &&
     // has current parent block
+    // 已经打开了一个block
     currentBlock &&
     // presence of a patch flag indicates this node needs patching on updates.
     // component nodes also should always be patched, because even if the
     // component doesn't need to update, it needs to persist the instance on to
     // the next vnode so that it can be properly unmounted later.
+    // 如果 pathFlag > 0, 则表示这个VNode是动态的。或者VNode是一个组件
     (vnode.patchFlag > 0 || shapeFlag & ShapeFlags.COMPONENT) &&
     // the EVENTS flag is only for hydration and if it is the only flag, the
     // vnode should not be considered dynamic due to handler caching.
+    // 如果patchFlag只有一个flag，而且是HYDRATE_EVENTS，因为将event handler缓存起来了，所以不应该认为是动态的
     vnode.patchFlag !== PatchFlags.HYDRATE_EVENTS
   ) {
     currentBlock.push(vnode)
@@ -507,7 +527,9 @@ export const createVNode = (
   __DEV__ ? createVNodeWithArgsTransform : _createVNode
 ) as typeof _createVNode
 
+// VNode也会进入整个方法执行
 function _createVNode(
+  //   可以是class组件、空的动态组件（没有传入is）
   type: VNodeTypes | ClassComponent | typeof NULL_DYNAMIC_COMPONENT,
   props: (Data & VNodeProps) | null = null,
   children: unknown = null,
@@ -805,6 +827,7 @@ export function normalizeChildren(vnode: VNode, children: unknown) {
   } else {
     children = String(children)
     // force teleport children to array so it can be moved around
+    // 强制将<teleport>子节点的shapeFlag为ARRAY_CHILDREN
     if (shapeFlag & ShapeFlags.TELEPORT) {
       type = ShapeFlags.ARRAY_CHILDREN
       children = [createTextVNode(children as string)]

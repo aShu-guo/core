@@ -1,0 +1,63 @@
+<div id="app"></div>
+<script src="../../packages/vue/dist/vue.global.js"></script>
+<!--<div>
+    &lt;!&ndash; 注释节点 &ndash;&gt;
+    文本节点
+    <span>元素节点</span>
+    <span>动态节点：{{name}}</span>
+    <div id='div' @click="onClick">Hello World</div>
+</div>-->
+<script>
+  const {
+    createElementVNode: _createElementVNode,
+    openBlock: _openBlock,
+    createElementBlock: _createElementBlock,
+    toDisplayString: _toDisplayString,
+    createCommentVNode: _createCommentVNode,
+    createTextVNode: _createTextVNode
+  } = Vue
+
+  const _hoisted_1 = /*#__PURE__*/ _createElementVNode(
+    'span',
+    null,
+    '元素节点',
+    -1 /* HOISTED */
+  )
+  const _hoisted_2 = ['onClick']
+
+  function render(_ctx, _cache, $props, $setup, $data, $options) {
+      debugger
+    return (
+      _openBlock(),
+      _createElementBlock('div', null, [
+        _createCommentVNode(' 注释节点 '),
+        _createTextVNode(' 文本节点 '),
+        _hoisted_1,
+        _createElementVNode(
+          'span',
+          null,
+          '动态节点：' + _toDisplayString(_ctx.name),
+          1 /* TEXT */
+        ),
+        _createElementVNode(
+          'div',
+          {
+            id: 'div',
+            onClick: _ctx.onClick
+          },
+          'Hello World',
+          8 /* PROPS */,
+          _hoisted_2
+        )
+      ])
+    )
+  }
+
+  let vNode = render({
+    name: '123',
+    onClick: () => {
+      console.log('hello world')
+    }
+  })
+  console.log(vNode)
+</script>

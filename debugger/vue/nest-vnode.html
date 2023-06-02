@@ -1,0 +1,116 @@
+<div id="app"></div>
+<script src="../../packages/vue/dist/vue.global.js"></script>
+<!--<div>
+  &lt;!&ndash; comment node &ndash;&gt;
+  text node{{name}}
+  <span>element node</span>
+  <span>dynamic node：{{name}}</span>
+  <span :class="name?'':''"></span>
+  <div id="div" @click="onClick">Hello World</div>
+  <div :class="name?'':''" :style="name?'':''" onClick="onClick" :title="name">
+    {{name}}
+    <div
+      :class="name?'':''"
+      :style="name?'':''"
+      onClick="onClick"
+      :title="name"
+    >
+      {{name}}
+    </div>
+  </div>
+</div>-->
+<script>
+  const {
+    createElementVNode: _createElementVNode,
+    openBlock: _openBlock,
+    createElementBlock: _createElementBlock,
+    toDisplayString: _toDisplayString,
+    createCommentVNode: _createCommentVNode,
+    createTextVNode: _createTextVNode,
+    normalizeClass: _normalizeClass,
+    normalizeStyle: _normalizeStyle
+  } = Vue
+
+  const _hoisted_1 = /*#__PURE__*/ _createElementVNode(
+    'span',
+    null,
+    'element node',
+    -1 /* HOISTED */
+  )
+  const _hoisted_2 = ['onClick']
+  const _hoisted_3 = ['title']
+  const _hoisted_4 = ['title']
+
+  function render(_ctx, _cache, $props, $setup, $data, $options) {
+    return (
+      _openBlock(),
+      _createElementBlock('div', null, [
+        _createCommentVNode(' comment node '),
+        _createTextVNode(
+          ' text node' + _toDisplayString(_ctx.name) + ' ',
+          1 /* TEXT */
+        ),
+        _hoisted_1,
+        _createElementVNode(
+          'span',
+          null,
+          'dynamic node：' + _toDisplayString(_ctx.name),
+          1 /* TEXT */
+        ),
+        _createElementVNode(
+          'span',
+          {
+            class: _normalizeClass(_ctx.name ? '' : '')
+          },
+          null,
+          2 /* CLASS */
+        ),
+        _createElementVNode(
+          'div',
+          {
+            id: 'div',
+            onClick: _ctx.onClick
+          },
+          'Hello World',
+          8 /* PROPS */,
+          _hoisted_2
+        ),
+        _createElementVNode(
+          'div',
+          {
+            class: _normalizeClass(_ctx.name ? '' : ''),
+            style: _normalizeStyle(_ctx.name ? '' : ''),
+            onClick: 'onClick',
+            title: _ctx.name
+          },
+          [
+            _createTextVNode(_toDisplayString(_ctx.name) + ' ', 1 /* TEXT */),
+            _createElementVNode(
+              'div',
+              {
+                class: _normalizeClass(_ctx.name ? '' : ''),
+                style: _normalizeStyle(_ctx.name ? '' : ''),
+                onClick: 'onClick',
+                title: _ctx.name
+              },
+              _toDisplayString(_ctx.name),
+              15 /* TEXT, CLASS, STYLE, PROPS */,
+              _hoisted_4
+            )
+          ],
+          14 /* CLASS, STYLE, PROPS */,
+          _hoisted_3
+        )
+      ])
+    )
+  }
+
+  debugger
+  let vNode = render({
+    name: '123',
+    onClick: () => {
+      console.log('hello world')
+    }
+  })
+  console.log(vNode)
+</script>

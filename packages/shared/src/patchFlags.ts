@@ -16,15 +16,18 @@
  * Check the `patchElement` function in '../../runtime-core/src/renderer.ts' to see how the
  * flags are handled during diff.
  */
+// 可以根据template是否有根节点，分为Fragment和根结点
 export const enum PatchFlags {
   /**
    * Indicates an element with dynamic textContent (children fast path)
    */
+  // 标记文本内容是动态的
   TEXT = 1,
 
   /**
    * Indicates an element with dynamic class binding.
    */
+  // 标记class绑定是动态的
   CLASS = 1 << 1,
 
   /**
@@ -38,6 +41,7 @@ export const enum PatchFlags {
    * render() { return e('div', { style }) }
    * ```
    */
+  // 标记行内style绑定是动态的
   STYLE = 1 << 2,
 
   /**
@@ -47,6 +51,7 @@ export const enum PatchFlags {
    * array that contains the keys of the props that may change so the runtime
    * can diff them faster (without having to worry about removed props)
    */
+  // 标记props是动态的，Vue2中的props和event handler 在Vue3中均归纳为了props
   PROPS = 1 << 3,
 
   /**
@@ -54,6 +59,7 @@ export const enum PatchFlags {
    * diff is always needed to remove the old key. This flag is mutually
    * exclusive with CLASS, STYLE and PROPS.
    */
+  // 标记class、style、props都是动态的，所以diff时直接用新节点替换旧节点
   FULL_PROPS = 1 << 4,
 
   /**

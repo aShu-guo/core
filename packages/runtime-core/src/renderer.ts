@@ -73,8 +73,11 @@ import { isAsyncWrapper } from './apiAsyncComponent'
 import { isCompatEnabled } from './compat/compatConfig'
 import { DeprecationTypes } from './compat/compatConfig'
 
+// renderer接口要求包含两个对象
 export interface Renderer<HostElement = RendererElement> {
+  // render函数
   render: RootRenderFunction<HostElement>
+  // 创建app的函数
   createApp: CreateAppFunction<HostElement>
 }
 
@@ -83,7 +86,9 @@ export interface HydrationRenderer extends Renderer<Element | ShadowRoot> {
 }
 
 export type RootRenderFunction<HostElement = RendererElement> = (
+  // 虚拟DOM
   vnode: VNode | null,
+  // 容器
   container: HostElement,
   isSVG?: boolean
 ) => void
@@ -293,6 +298,7 @@ export const queuePostRenderEffect = __FEATURE_SUSPENSE__
  * })
  * ```
  */
+// Vue对外提供的创建renderer的的方法，当然开发者可以根据Vue做二次开发时，提供要求的选项便可以常见出自己的renderer
 export function createRenderer<
   HostNode = RendererNode,
   HostElement = RendererElement

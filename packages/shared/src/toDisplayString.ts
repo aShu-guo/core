@@ -25,6 +25,7 @@ export const toDisplayString = (val: unknown): string => {
     : String(val)
 }
 
+// 替换{{}}中的变量区分不同类型，展示不同字符串
 const replacer = (_key: string, val: any): any => {
   // can't use isRef here since @vue/shared has no deps
   if (val && val.__v_isRef) {
